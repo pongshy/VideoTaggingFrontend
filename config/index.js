@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 开启代理
+    proxyTable: {
+      '/api': {
+        target: 'http://127.0.0.1:8081', // 需要跨域请求的地址或者IP
+        changeOrigin: true, //  表示是否跨域
+        // pathRewrite: {
+        //   '^/api': '' // 表示需要rewrite重写的
+        // }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -72,5 +81,22 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
+  },
+
+  /**
+   * 解决本地开发，前后端跨域问题
+   */
+  devServer:{
+    devServer: {
+      proxy: {
+        '/api': { // '/api'是代理标识，用于告诉node，url前面是/api的就是使用代理的
+          target: "http://127.0.0.1:8081", //目标地址，一般是指后台服务器地址
+          changeOrigin: true, //是否跨域
+          // pathRewrite: { // pathRewrite 的作用是把实际Request Url中的'/api'用""代替
+          //   '^/api': ""
+          // }
+        }
+      }
+    }
   }
 }

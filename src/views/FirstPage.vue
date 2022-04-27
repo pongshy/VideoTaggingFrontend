@@ -28,7 +28,6 @@
       </el-aside>
       <el-container>
         <el-main>
-<!--          <el-button type="primary" @click="test">测试path</el-button>-->
           <router-view></router-view>
         </el-main>
         <el-footer>上海大学-18120196-谢鹏-毕业设计</el-footer>

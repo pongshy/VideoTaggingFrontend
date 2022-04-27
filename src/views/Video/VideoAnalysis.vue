@@ -14,7 +14,7 @@
       :on-exceed="handleExceed"
       :show-file-list="false">
       <span>请选择视频上传并自动分析: </span>
-      <el-button size="medium" type="primary">点击上传</el-button>
+      <el-button size="medium" type="primary" :loading="loadFlag" icon="el-icon-upload">点击上传</el-button>
 <!--      <div slot="tip" class="el-upload__tip">只能上传mp4文件，且不超过20MB</div>-->
     </el-upload>
     <br>
@@ -53,6 +53,7 @@
             label="视频比特率">
           </el-table-column>
           <el-table-column
+            :formatter="tagFormatter"
             prop="is_sport"
             label="是否为体育类型视频">
           </el-table-column>
@@ -91,7 +92,8 @@ export default {
       ],
       tableData: [],
       pageSize: 5,
-      currentPage: 1
+      currentPage: 1,
+      loadFlag: false
     }
   },
   computed: {
@@ -115,6 +117,7 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`)
     },
     handleBeforeUpload () {
+      this.loadFlag = true
     },
     formatter (row, column) {
       return row.address
@@ -151,7 +154,7 @@ export default {
           message: '视频上传失败'
         })
       }
-      // var get_data = res['data']
+      this.loadFlag = false
     },
     errorUpload () {
       console.log('Error Upload')
@@ -159,6 +162,7 @@ export default {
         title: '错误',
         message: '视频上传失败'
       })
+      this.loadFlag = false
     },
     processing () {
       console.log('Processing')
@@ -179,6 +183,17 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
+    },
+    // 动态转换数据
+    tagFormatter (row, column) {
+      let tag = row.is_sport
+      if (tag === 1) {
+        return '是'
+      } else if (tag === 0) {
+        return '否'
+      } else {
+        return '未知'
+      }
     }
   }
 }
