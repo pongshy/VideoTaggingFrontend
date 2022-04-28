@@ -11,6 +11,7 @@ import NotFound from '../views/NotFound'
 import FirstPage from '../views/FirstPage'
 import VideoAnalysis from '../views/Video/VideoAnalysis'
 import VideoSearch from '../views/Video/VideoSearch'
+import VideoPlay from '../views/Video/VideoPlay'
 
 Vue.use(Router)
 
@@ -41,7 +42,17 @@ export default new Router({
           // 视频检索
           path: '/firstPage/vs',
           name: 'VideoSearch',
-          component: VideoSearch
+          component: VideoSearch,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          // 视频播放
+          path: '/firstPage/vs/play',
+          name: 'VideoPlay',
+          component: VideoPlay,
+          props: true
         }
       ]
     },

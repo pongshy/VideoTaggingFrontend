@@ -42,7 +42,7 @@
           </el-table-column>
           <el-table-column
             prop="duration"
-            label="总时长">
+            label="总时长(s)">
           </el-table-column>
           <el-table-column
             prop="frames"
@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column
             prop="bit_rate"
-            label="视频比特率">
+            label="码率(bps)">
           </el-table-column>
           <el-table-column
             :formatter="tagFormatter"
@@ -134,7 +134,7 @@ export default {
       if (code === 200) {
         var t = {
           id: tid,
-          video_name: d['videoname'],
+          video_name: this.handleVideoName(d['videoname']),
           duration: d['duration'],
           frames: d['frames'],
           bit_rate: d['bitRate'],
@@ -194,6 +194,11 @@ export default {
       } else {
         return '未知'
       }
+    },
+    handleVideoName (vname) {
+      let index = vname.lastIndexOf('.')
+      let res = vname.substring(0, index)
+      return res
     }
   }
 }

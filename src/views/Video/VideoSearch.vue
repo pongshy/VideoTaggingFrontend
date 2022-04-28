@@ -49,7 +49,7 @@
         </el-table-column>
         <el-table-column
           prop="bit_rate"
-          label="视频比特率"
+          label="码率(bps)"
           sortable>
         </el-table-column>
         <el-table-column
@@ -152,7 +152,7 @@ export default {
               let tmp = ds[i]
               let d = {
                 // id: tid,
-                video_name: tmp['videoname'],
+                video_name: this.handleVideoName(tmp['videoname']),
                 duration: tmp['duration'],
                 frames: tmp['frames'],
                 bit_rate: tmp['bitRate'],
@@ -212,7 +212,12 @@ export default {
       return (this.currentPage - 1) * this.pageSize + index + 1
     },
     handleWatch (index, row) {
+      console.log('----------')
       console.log(index, row)
+      this.$router.push({
+        name: 'VideoPlay',
+        params: {'address': row['address'], 'video_name': row['video_name']}
+      })
     },
     handleDownload (index, row) {
       // console.log(index, row)
@@ -269,6 +274,11 @@ export default {
       //   }).catch((err) => {
       //     console.log(err)
       //   })
+    },
+    handleVideoName (vname) {
+      let index = vname.lastIndexOf('.')
+      let res = vname.substring(0, index)
+      return res
     }
   }
 }
