@@ -24,6 +24,10 @@
             <i class="el-icon-coin"></i>
             <span class="item" slot="title">视频检索</span>
           </el-menu-item>
+          <el-menu-item index="/firstPage/vup">
+            <i class="el-icon-folder"></i>
+            <span class="item" slot="title">视频图床</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>

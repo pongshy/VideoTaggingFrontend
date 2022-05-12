@@ -12,6 +12,7 @@ import FirstPage from '../views/FirstPage'
 import VideoAnalysis from '../views/Video/VideoAnalysis'
 import VideoSearch from '../views/Video/VideoSearch'
 import VideoPlay from '../views/Video/VideoPlay'
+import VideoUpload from '../views/Video/VideoUpload'
 
 Vue.use(Router)
 
@@ -46,6 +47,12 @@ export default new Router({
           meta: {
             keepAlive: true
           }
+        },
+        {
+          // 视频上传
+          path: '/firstPage/vup',
+          name: 'VideoUpload',
+          component: VideoUpload
         },
         {
           // 视频播放
