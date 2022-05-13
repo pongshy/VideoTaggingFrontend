@@ -223,11 +223,15 @@ export default {
       // console.log(index, row)
       // console.log(row['address'])
       console.log('开始下载')
+      console.log('-----------')
+      console.log(row['address'])
+      console.log('------------')
       const d = {'path': row['address']}
       let instance = {
         baseURL: `/api/tag/download`,
         method: 'POST',
         data: Qs.stringify(d),
+        dataType: 'JSON',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         responseType: 'arraybuffer',
         timeout: 100000
@@ -237,14 +241,15 @@ export default {
           console.log('下载文件接口请求成功')
           console.log(res)
           const blob = new Blob([res.data])
-          const filename = row['video_name']
+          const filename = row['video_name'] + '.mp4'
+          console.log(filename)
 
           const link = document.createElement('a')
           link.download = filename
           link.style.display = 'none'
-          link.href = URL.createObjectURL(blob)
+          link.href = window.URL.createObjectURL(blob)
           link.click()
-          URL.revokeObjectURL(link.href)
+          window.URL.revokeObjectURL(link.href)
           document.body.removeChild(link)
         }).catch((err) => {
           console.log(err)
