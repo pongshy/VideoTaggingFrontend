@@ -2,7 +2,8 @@
   <div>
     <div>
       <el-input v-model="input" placeholder="请输入与视频标题相关的内容" style="width: 500px"></el-input>
-      <el-select v-model="value" placeholder="请选择" @change="changeEvent">
+      <span>&emsp;体育运动类:</span>
+      <el-select v-model="value" placeholder="请选择" @change="changeEvent" style="width: 80px">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -10,6 +11,25 @@
           :value="item.value">
         </el-option>
       </el-select>
+      <span>&emsp;交通类:</span>
+      <el-select v-model="tvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
+        <el-option
+          v-for="item in transports"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <span>&emsp;美食类:</span>
+      <el-select v-model="fvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
+        <el-option
+          v-for="item in food"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      &emsp;
       <el-button type="primary" size="medium" @click="search" icon="el-icon-search">搜索</el-button>
     </div>
     <br>
@@ -54,7 +74,17 @@
         </el-table-column>
         <el-table-column
           prop="is_sport"
-          label="是否为体育类型视频"
+          label="运动体育类型"
+          :formatter="tagFormatter">
+        </el-table-column>
+        <el-table-column
+          prop="is_sport"
+          label="美食类型"
+          :formatter="tagFormatter">
+        </el-table-column>
+        <el-table-column
+          prop="is_sport"
+          label="交通类型"
           :formatter="tagFormatter">
         </el-table-column>
         <el-table-column
@@ -102,19 +132,49 @@ export default {
       input: '',
       options: [
         {
-          label: '全部',
+          label: '不限',
           value: -1
         },
         {
-          label: '体育运动类',
+          label: '是',
           value: 1
         },
         {
-          label: '其他类',
+          label: '否',
+          value: 0
+        }
+      ],
+      transports: [
+        {
+          label: '不限',
+          value: -1
+        },
+        {
+          label: '是',
+          value: 1
+        },
+        {
+          label: '否',
+          value: 0
+        }
+      ],
+      food: [
+        {
+          label: '不限',
+          value: -1
+        },
+        {
+          label: '是',
+          value: 1
+        },
+        {
+          label: '否',
           value: 0
         }
       ],
       value: -1,
+      fvalue: -1,
+      tvalue: -1,
       tableData: [],
       currentPage: 1,
       pageSize: 5,
@@ -124,7 +184,13 @@ export default {
   },
   methods: {
     changeEvent () {
-      console.log(this.value)
+      console.log('------------')
+      console.log('value: ' + this.value)
+      console.log('------------')
+      console.log('fvalue: ' + this.fvalue)
+      console.log('------------')
+      console.log('tvalue: ' + this.tvalue)
+      console.log('------------')
     },
     headStyle () {
       return 'text-align: center'

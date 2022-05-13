@@ -55,7 +55,17 @@
           <el-table-column
             :formatter="tagFormatter"
             prop="is_sport"
-            label="是否为体育类型视频">
+            label="运动体育类型">
+          </el-table-column>
+          <el-table-column
+            :formatter="tagFormatter"
+            prop="is_sport"
+            label="美食类型">
+          </el-table-column>
+          <el-table-column
+            :formatter="tagFormatter"
+            prop="is_sport"
+            label="交通类型">
           </el-table-column>
           <el-table-column
             prop="date"
