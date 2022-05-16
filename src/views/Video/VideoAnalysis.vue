@@ -53,19 +53,19 @@
             label="码率(bps)">
           </el-table-column>
           <el-table-column
-            :formatter="tagFormatter"
+            :formatter="sportFormatter"
             prop="is_sport"
             label="运动体育类型">
           </el-table-column>
           <el-table-column
-            :formatter="tagFormatter"
-            prop="is_sport"
-            label="美食类型">
+            :formatter="animalFormatter"
+            prop="is_animal"
+            label="动物类型">
           </el-table-column>
           <el-table-column
-            :formatter="tagFormatter"
-            prop="is_sport"
-            label="交通类型">
+            :formatter="transportFormatter"
+            prop="is_transport"
+            label="交通工具类型">
           </el-table-column>
           <el-table-column
             prop="date"
@@ -148,7 +148,9 @@ export default {
           duration: d['duration'],
           frames: d['frames'],
           bit_rate: d['bitRate'],
-          is_sport: d['tag'],
+          is_sport: d['sport'],
+          is_animal: d['animal'],
+          is_transport: d['transport'],
           date: d['modifytime']
         }
         this.tableData.push(t)
@@ -195,8 +197,28 @@ export default {
       this.currentPage = val
     },
     // 动态转换数据
-    tagFormatter (row, column) {
+    sportFormatter (row, column) {
       let tag = row.is_sport
+      if (tag === 1) {
+        return '是'
+      } else if (tag === 0) {
+        return '否'
+      } else {
+        return '未知'
+      }
+    },
+    animalFormatter (row, column) {
+      let tag = row.is_animal
+      if (tag === 1) {
+        return '是'
+      } else if (tag === 0) {
+        return '否'
+      } else {
+        return '未知'
+      }
+    },
+    transportFormatter (row, column) {
+      let tag = row.is_transport
       if (tag === 1) {
         return '是'
       } else if (tag === 0) {

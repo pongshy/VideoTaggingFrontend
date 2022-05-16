@@ -11,19 +11,19 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <span>&emsp;交通类:</span>
-      <el-select v-model="tvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
+      <span>&emsp;动物类:</span>
+      <el-select v-model="avalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
         <el-option
-          v-for="item in transports"
+          v-for="item in animal"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <span>&emsp;美食类:</span>
-      <el-select v-model="fvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
+      <span>&emsp;交通工具类:</span>
+      <el-select v-model="tvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
         <el-option
-          v-for="item in food"
+          v-for="item in transport"
           :key="item.value"
           :label="item.label"
           :value="item.value">
@@ -73,19 +73,19 @@
           sortable>
         </el-table-column>
         <el-table-column
+          :formatter="sportFormatter"
           prop="is_sport"
-          label="运动体育类型"
-          :formatter="tagFormatter">
+          label="运动体育类型">
         </el-table-column>
         <el-table-column
-          prop="is_sport"
-          label="美食类型"
-          :formatter="tagFormatter">
+          :formatter="animalFormatter"
+          prop="is_animal"
+          label="动物类型">
         </el-table-column>
         <el-table-column
-          prop="is_sport"
-          label="交通类型"
-          :formatter="tagFormatter">
+          :formatter="transportFormatter"
+          prop="is_transport"
+          label="交通工具类型">
         </el-table-column>
         <el-table-column
           prop="date"
@@ -144,7 +144,7 @@ export default {
           value: 0
         }
       ],
-      transports: [
+      transport: [
         {
           label: '不限',
           value: -1
@@ -158,7 +158,7 @@ export default {
           value: 0
         }
       ],
-      food: [
+      animal: [
         {
           label: '不限',
           value: -1
@@ -173,8 +173,8 @@ export default {
         }
       ],
       value: -1,
-      fvalue: -1,
       tvalue: -1,
+      avalue: -1,
       tableData: [],
       currentPage: 1,
       pageSize: 5,
@@ -187,7 +187,7 @@ export default {
       console.log('------------')
       console.log('value: ' + this.value)
       console.log('------------')
-      console.log('fvalue: ' + this.fvalue)
+      console.log('avalue: ' + this.avalue)
       console.log('------------')
       console.log('tvalue: ' + this.tvalue)
       console.log('------------')
@@ -202,7 +202,9 @@ export default {
       console.log('搜索')
       let data = {
         title: this.input,
-        tag: this.value
+        sport: this.value,
+        animal: this.avalue,
+        transport: this.tvalue
       }
       // let tid = 1
       this.loading = true
@@ -222,7 +224,9 @@ export default {
                 duration: tmp['duration'],
                 frames: tmp['frames'],
                 bit_rate: tmp['bitRate'],
-                is_sport: tmp['tag'],
+                is_sport: tmp['sport'],
+                is_animal: tmp['animal'],
+                is_transport: tmp['transport'],
                 date: tmp['modifytime'],
                 address: tmp['address']
               }
@@ -264,8 +268,28 @@ export default {
       }
     },
     // 动态转换数据
-    tagFormatter (row, column) {
+    sportFormatter (row, column) {
       let tag = row.is_sport
+      if (tag === 1) {
+        return '是'
+      } else if (tag === 0) {
+        return '否'
+      } else {
+        return '未知'
+      }
+    },
+    animalFormatter (row, column) {
+      let tag = row.is_animal
+      if (tag === 1) {
+        return '是'
+      } else if (tag === 0) {
+        return '否'
+      } else {
+        return '未知'
+      }
+    },
+    transportFormatter (row, column) {
+      let tag = row.is_transport
       if (tag === 1) {
         return '是'
       } else if (tag === 0) {
