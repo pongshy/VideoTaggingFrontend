@@ -17,6 +17,7 @@
     <el-table
       :data="tableData"
       style="width: 100%"
+      stripe="true"
       :header-cell-style="headStyle"
       :cell-style="rowStyle">
       <el-table-column type="expand">

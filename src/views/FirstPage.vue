@@ -7,7 +7,7 @@
 <!--          <img src="../assets/logo.png" style="width: 5px; height: 5px;">-->
 <!--        </template>-->
         <i class="el-icon-orange"></i>
-        <span style="color: #eeeeee">视频内容分析与检索系统</span>
+        <span style="color: #eeeeee">基于图像识别的视频分类与检索系统</span>
       </div>
     </el-header>
     <el-container>
