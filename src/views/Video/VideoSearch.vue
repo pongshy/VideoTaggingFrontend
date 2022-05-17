@@ -95,11 +95,12 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
-              size="primary"
+              size="small"
+              type="primary"
               icon="el-icon-video-camera"
               @click="handleWatch(scope.$index, scope.row)">观看</el-button>
             <el-button
-              size="primary"
+              size="small"
               type="success"
               icon="el-icon-download"
               @click="handleDownload(scope.$index, scope.row)">下载</el-button>

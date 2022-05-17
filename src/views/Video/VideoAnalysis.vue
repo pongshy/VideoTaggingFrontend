@@ -33,6 +33,8 @@
             prop="id"
             label="序号"
             sortable
+            type="index"
+            :index="IndexMethod"
             width="180">
           </el-table-column>
           <el-table-column
@@ -91,6 +93,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'VideoAnalysis',
   data () {
@@ -153,7 +157,7 @@ export default {
           is_transport: d['transport'],
           date: d['modifytime']
         }
-        this.tableData.push(t)
+        this.tableData.unshift(t)
         console.log(t)
         this.$notify({
           title: '成功',
@@ -231,7 +235,53 @@ export default {
       let index = vname.lastIndexOf('.')
       let res = vname.substring(0, index)
       return res
+    },
+    IndexMethod (index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1
+    },
+    loadVideoInfo () {
+      console.log('---------------')
+      console.log('加载页面')
+      console.log('---------------')
+      axios
+        .get('http://127.0.0.1:8081/api/tag/load')
+        .then((res) => {
+          this.tableData = []
+          console.log(res)
+          let ds = res['data']['data']
+          console.log(ds)
+          if (ds != null) {
+            for (let i = 0; i < ds.length; ++i) {
+              let tmp = ds[i]
+              let d = {
+                // id: tid,
+                video_name: this.handleVideoName(tmp['videoname']),
+                duration: tmp['duration'],
+                frames: tmp['frames'],
+                bit_rate: tmp['bitRate'],
+                is_sport: tmp['sport'],
+                is_animal: tmp['animal'],
+                is_transport: tmp['transport'],
+                date: tmp['modifytime'],
+                address: tmp['address']
+              }
+              this.tableData.push(d)
+              // tid += 1
+            }
+            this.$notify({
+              title: '成功',
+              message: '加载完成',
+              type: 'success'
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
+  },
+  mounted () {
+    this.loadVideoInfo()
   }
 }
 </script>

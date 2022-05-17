@@ -127,7 +127,7 @@ export default {
           dealTime: d['dealTime'],
           videoSize: d['fileSize']
         }
-        this.tableData.push(t)
+        this.tableData.unshift(t)
         console.log(t)
         this.$notify({
           title: '成功',
@@ -160,7 +160,15 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
+    },
+    loadVideoInfo () {
+      console.log('---------------')
+      console.log('加载页面')
+      console.log('---------------')
     }
+  },
+  mounted () {
+    this.loadVideoInfo()
   }
 }
 </script>
