@@ -53,7 +53,8 @@
       </el-table-column>
       <el-table-column
         label="序号"
-        prop="id">
+        type="index"
+        :index="IndexMethod">
       </el-table-column>
       <el-table-column
         label="视频名"
@@ -66,6 +67,15 @@
       <el-table-column
         label="上传时间"
         prop="dealTime">
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="medium"
+            type="danger"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -82,6 +92,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'VideoUpload',
   data () {
@@ -111,15 +123,15 @@ export default {
     successUpload (res) {
       console.log('Successfully Upload')
       console.log(res)
-      var tid = 1
-      if (this.tableData.length > 0) {
-        tid = this.tableData[this.tableData.length - 1]['id'] + 1
-      }
+      // var tid = 1
+      // if (this.tableData.length > 0) {
+      //   tid = this.tableData[this.tableData.length - 1]['id'] + 1
+      // }
       var d = res['data']
       var code = res['code']
       if (code === 200) {
         var t = {
-          id: tid,
+          // id: tid,
           video_name: this.handleVideoName(d['videoname']),
           upURL: d['url'],
           // eslint-disable-next-line no-useless-escape
@@ -161,10 +173,88 @@ export default {
       console.log(`当前页: ${val}`)
       this.currentPage = val
     },
+    IndexMethod (index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1
+    },
     loadVideoInfo () {
       console.log('---------------')
       console.log('加载页面')
       console.log('---------------')
+      axios
+        .get('http://127.0.0.1:8081/api/tag/loadBed')
+        .then((res) => {
+          this.tableData = []
+          console.log(res)
+          let ds = res['data']['data']
+          console.log(ds)
+          if (ds != null) {
+            for (let i = 0; i < ds.length; ++i) {
+              let tmp = ds[i]
+              let d = {
+                // id: tid,
+                video_name: this.handleVideoName(tmp['videoname']),
+                upURL: tmp['url'],
+                // eslint-disable-next-line no-useless-escape
+                htmlD: '<iframe src=\"' + tmp['url'] + '\" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height=498 width=510></iframe>',
+                dealTime: tmp['dealTime'],
+                videoSize: tmp['fileSize']
+              }
+              this.tableData.push(d)
+              // tid += 1
+            }
+            this.$notify({
+              title: '成功',
+              message: '加载完成',
+              type: 'success'
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    handleDelete (index, row) {
+      console.log('删除按钮')
+      console.log('-----------------')
+      console.log(row.upURL)
+      let i = row.upURL.lastIndexOf('/')
+      var vn = row.upURL.substring(i + 1)
+      console.log(vn)
+      console.log('------------------')
+      axios
+        .get('http://www.pongshy.com:8081/api/tag/delete', {params: {'vn': vn}})
+        .then((res) => {
+          this.tableData = []
+          console.log(res)
+          let ds = res['data']['data']
+          console.log(ds)
+          // 清空列表，重新加载
+          this.tableData.splice(0, this.tableData.length)
+          if (ds != null) {
+            for (let i = 0; i < ds.length; ++i) {
+              let tmp = ds[i]
+              let d = {
+                // id: tid,
+                video_name: this.handleVideoName(tmp['videoname']),
+                upURL: tmp['url'],
+                // eslint-disable-next-line no-useless-escape
+                htmlD: '<iframe src=\"' + tmp['url'] + '\" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height=498 width=510></iframe>',
+                dealTime: tmp['dealTime'],
+                videoSize: tmp['fileSize']
+              }
+              this.tableData.push(d)
+              // tid += 1
+            }
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success'
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   },
   mounted () {
