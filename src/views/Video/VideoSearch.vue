@@ -2,35 +2,40 @@
   <div>
     <div>
       <el-input v-model="input" placeholder="请输入与视频标题相关的内容" style="width: 500px"></el-input>
-      <span>&emsp;体育运动类:</span>
-      <el-select v-model="value" placeholder="请选择" @change="changeEvent" style="width: 80px">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <span>&emsp;动物类:</span>
-      <el-select v-model="avalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
-        <el-option
-          v-for="item in animal"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <span>&emsp;交通工具类:</span>
-      <el-select v-model="tvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">
-        <el-option
-          v-for="item in transport"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
+      <span>&emsp;</span>
+      <el-checkbox v-model="scho" border size="medium" @chanage="test">体育运动</el-checkbox>
+      <el-checkbox v-model="acho" border size="medium">动物</el-checkbox>
+      <el-checkbox v-model="tcho" border size="medium">汽车</el-checkbox>
+<!--      <span>&emsp;体育运动类:</span>-->
+<!--      <el-select v-model="value" placeholder="请选择" @change="changeEvent" style="width: 80px">-->
+<!--        <el-option-->
+<!--          v-for="item in options"-->
+<!--          :key="item.value"-->
+<!--          :label="item.label"-->
+<!--          :value="item.value">-->
+<!--        </el-option>-->
+<!--      </el-select>-->
+<!--      <span>&emsp;动物类:</span>-->
+<!--      <el-select v-model="avalue" placeholder="请选择" @change="changeEvent" style="width: 80px">-->
+<!--        <el-option-->
+<!--          v-for="item in animal"-->
+<!--          :key="item.value"-->
+<!--          :label="item.label"-->
+<!--          :value="item.value">-->
+<!--        </el-option>-->
+<!--      </el-select>-->
+<!--      <span>&emsp;交通工具类:</span>-->
+<!--      <el-select v-model="tvalue" placeholder="请选择" @change="changeEvent" style="width: 80px">-->
+<!--        <el-option-->
+<!--          v-for="item in transport"-->
+<!--          :key="item.value"-->
+<!--          :label="item.label"-->
+<!--          :value="item.value">-->
+<!--        </el-option>-->
+<!--      </el-select>-->
       &emsp;
       <el-button type="primary" size="medium" @click="search" icon="el-icon-search">搜索</el-button>
+      <el-button type="warning" size="medium" @click="resetInfo" icon="el-icon-refresh">重置</el-button>
     </div>
     <br>
     <div>
@@ -72,20 +77,30 @@
           label="码率(bps)"
           sortable>
         </el-table-column>
+<!--        <el-table-column-->
+<!--          :formatter="sportFormatter"-->
+<!--          prop="is_sport"-->
+<!--          label="运动体育类型">-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          :formatter="animalFormatter"-->
+<!--          prop="is_animal"-->
+<!--          label="动物类型">-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          :formatter="transportFormatter"-->
+<!--          prop="is_transport"-->
+<!--          label="交通工具类型">-->
+<!--        </el-table-column>-->
         <el-table-column
-          :formatter="sportFormatter"
-          prop="is_sport"
-          label="运动体育类型">
-        </el-table-column>
-        <el-table-column
-          :formatter="animalFormatter"
-          prop="is_animal"
-          label="动物类型">
-        </el-table-column>
-        <el-table-column
-          :formatter="transportFormatter"
-          prop="is_transport"
-          label="交通工具类型">
+          label="类型">
+          <template slot-scope="scope">
+<!--            <el-tag :type="scope.row.is_sport === 1 ? 'success' : 'danger'">测试</el-tag>-->
+            <el-tag v-if="scope.row.is_sport === 1" type="success">体育运动</el-tag>
+            <el-tag v-if="scope.row.is_animal === 1">纪录片</el-tag>
+            <el-tag v-if="scope.row.is_transport === 1" type="warning">汽车</el-tag>
+            <el-tag v-if="scope.row.is_sport === 0 && scope.row.is_animal === 0 && scope.row.is_transport === 0" type="info">其他</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
           prop="date"
@@ -173,6 +188,9 @@ export default {
           value: 0
         }
       ],
+      scho: false,
+      acho: false,
+      tcho: false,
       value: -1,
       tvalue: -1,
       avalue: -1,
@@ -182,6 +200,9 @@ export default {
       url: 'http://localhost:8081/api/tag/select',
       loading: false
     }
+  },
+  mounted () {
+    this.loadVideoInfo()
   },
   methods: {
     changeEvent () {
@@ -201,11 +222,18 @@ export default {
     },
     search () {
       console.log('搜索')
+      console.log('体育运动: ' + this.scho)
+      console.log('动物: ' + this.acho)
+      console.log('汽车: ' + this.tcho)
+      console.log('input: ' + this.input)
       let data = {
         title: this.input,
-        sport: this.value,
-        animal: this.avalue,
-        transport: this.tvalue
+        // sport: this.value,
+        // animal: this.avalue,
+        // transport: this.tvalue
+        sport: this.scho === true ? 1 : -1,
+        animal: this.acho === true ? 1 : -1,
+        transport: this.tcho === true ? 1 : -1
       }
       // let tid = 1
       this.loading = true
@@ -375,6 +403,114 @@ export default {
       let index = vname.lastIndexOf('.')
       let res = vname.substring(0, index)
       return res
+    },
+    test (value) {
+      console.log('开始测试')
+      console.log('体育运动: ' + this.acho)
+    },
+    resetInfo () {
+      console.log('-------------')
+      console.log('reset')
+      console.log('-------------')
+      this.tcho = false
+      this.acho = false
+      this.scho = false
+      this.input = ''
+      this.loading = true
+      axios
+        .get('http://localhost:8081/api/tag/loadSearch')
+        .then((res) => {
+          this.tableData = []
+          console.log(res)
+          let ds = res['data']['data']
+          console.log(ds)
+          if (ds != null) {
+            for (let i = 0; i < ds.length; ++i) {
+              let tmp = ds[i]
+              let d = {
+                // id: tid,
+                video_name: this.handleVideoName(tmp['videoname']),
+                duration: tmp['duration'],
+                frames: tmp['frames'],
+                bit_rate: tmp['bitRate'],
+                is_sport: tmp['sport'],
+                is_animal: tmp['animal'],
+                is_transport: tmp['transport'],
+                date: tmp['modifytime'],
+                address: tmp['address']
+              }
+              this.tableData.push(d)
+              // tid += 1
+            }
+            this.$notify({
+              title: '成功',
+              message: '检索成功',
+              type: 'success'
+            })
+          } else {
+            this.$notify.error({
+              title: '错误',
+              message: '检索失败'
+            })
+          }
+          this.loading = false
+        })
+        .catch(error => {
+          console.log(error)
+          this.loading = false
+        })
+    },
+    loadVideoInfo () {
+      console.log('----------')
+      console.log('视频分析页面预加载')
+      this.scho = false
+      this.acho = false
+      this.tcho = false
+      this.input = ''
+      // let tid = 1
+      this.loading = true
+      axios
+        .get('http://localhost:8081/api/tag/loadSearch')
+        .then((res) => {
+          this.tableData = []
+          console.log(res)
+          let ds = res['data']['data']
+          console.log(ds)
+          if (ds != null) {
+            for (let i = 0; i < ds.length; ++i) {
+              let tmp = ds[i]
+              let d = {
+                // id: tid,
+                video_name: this.handleVideoName(tmp['videoname']),
+                duration: tmp['duration'],
+                frames: tmp['frames'],
+                bit_rate: tmp['bitRate'],
+                is_sport: tmp['sport'],
+                is_animal: tmp['animal'],
+                is_transport: tmp['transport'],
+                date: tmp['modifytime'],
+                address: tmp['address']
+              }
+              this.tableData.push(d)
+              // tid += 1
+            }
+            this.$notify({
+              title: '成功',
+              message: '检索成功',
+              type: 'success'
+            })
+          } else {
+            this.$notify.error({
+              title: '错误',
+              message: '检索失败'
+            })
+          }
+          this.loading = false
+        })
+        .catch(error => {
+          console.log(error)
+          this.loading = false
+        })
     }
   }
 }

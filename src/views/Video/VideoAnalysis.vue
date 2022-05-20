@@ -54,20 +54,30 @@
             prop="bit_rate"
             label="码率(bps)">
           </el-table-column>
+<!--          <el-table-column-->
+<!--            :formatter="sportFormatter"-->
+<!--            prop="is_sport"-->
+<!--            label="运动体育类型">-->
+<!--          </el-table-column>-->
+<!--          <el-table-column-->
+<!--            :formatter="animalFormatter"-->
+<!--            prop="is_animal"-->
+<!--            label="动物类型">-->
+<!--          </el-table-column>-->
+<!--          <el-table-column-->
+<!--            :formatter="transportFormatter"-->
+<!--            prop="is_transport"-->
+<!--            label="交通工具类型">-->
+<!--          </el-table-column>-->
           <el-table-column
-            :formatter="sportFormatter"
-            prop="is_sport"
-            label="运动体育类型">
-          </el-table-column>
-          <el-table-column
-            :formatter="animalFormatter"
-            prop="is_animal"
-            label="动物类型">
-          </el-table-column>
-          <el-table-column
-            :formatter="transportFormatter"
-            prop="is_transport"
-            label="交通工具类型">
+            label="类型">
+            <template slot-scope="scope">
+              <!--            <el-tag :type="scope.row.is_sport === 1 ? 'success' : 'danger'">测试</el-tag>-->
+              <el-tag v-if="scope.row.is_sport === 1" type="success">体育运动</el-tag>
+              <el-tag v-if="scope.row.is_animal === 1">动物</el-tag>
+              <el-tag v-if="scope.row.is_transport === 1" type="warning">汽车</el-tag>
+              <el-tag v-if="scope.row.is_sport === 0 && scope.row.is_animal === 0 && scope.row.is_transport === 0" type="info">其他</el-tag>
+            </template>
           </el-table-column>
           <el-table-column
             prop="date"
@@ -161,13 +171,13 @@ export default {
         console.log(t)
         this.$notify({
           title: '成功',
-          message: '视频上传成功',
+          message: '视频分析成功',
           type: 'success'
         })
       } else {
         this.$notify.error({
           title: '错误',
-          message: '视频上传失败'
+          message: '视频分析失败'
         })
       }
       this.loadFlag = false
