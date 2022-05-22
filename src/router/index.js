@@ -13,6 +13,7 @@ import VideoAnalysis from '../views/Video/VideoAnalysis'
 import VideoSearch from '../views/Video/VideoSearch'
 import VideoPlay from '../views/Video/VideoPlay'
 import VideoUpload from '../views/Video/VideoUpload'
+import HomePage from '../views/HomePage'
 
 Vue.use(Router)
 
@@ -22,11 +23,16 @@ export default new Router({
       // 路由跳转
       path: '/',
       // redirect: '/firstPage',
-      redirect: '/firstPage',
+      redirect: '/home',
       // 路由名称
       name: 'TryVue',
       // 路由跳转的组件
       component: TryVue
+    },
+    {
+      path: '/home',
+      name: 'HomePage',
+      component: HomePage
     },
     {
       path: '/firstPage',

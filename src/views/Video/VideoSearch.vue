@@ -4,8 +4,8 @@
       <el-input v-model="input" placeholder="请输入与视频标题相关的内容" style="width: 500px"></el-input>
       <span>&emsp;</span>
       <el-checkbox v-model="scho" border size="medium" @chanage="test">体育运动</el-checkbox>
-      <el-checkbox v-model="acho" border size="medium">动物</el-checkbox>
-      <el-checkbox v-model="tcho" border size="medium">汽车</el-checkbox>
+      <el-checkbox v-model="acho" border size="medium">纪录片</el-checkbox>
+      <el-checkbox v-model="tcho" border size="medium">新闻</el-checkbox>
 <!--      <span>&emsp;体育运动类:</span>-->
 <!--      <el-select v-model="value" placeholder="请选择" @change="changeEvent" style="width: 80px">-->
 <!--        <el-option-->
@@ -98,7 +98,7 @@
 <!--            <el-tag :type="scope.row.is_sport === 1 ? 'success' : 'danger'">测试</el-tag>-->
             <el-tag v-if="scope.row.is_sport === 1" type="success">体育运动</el-tag>
             <el-tag v-if="scope.row.is_animal === 1">纪录片</el-tag>
-            <el-tag v-if="scope.row.is_transport === 1" type="warning">汽车</el-tag>
+            <el-tag v-if="scope.row.is_transport === 1" type="warning">新闻</el-tag>
             <el-tag v-if="scope.row.is_sport === 0 && scope.row.is_animal === 0 && scope.row.is_transport === 0" type="info">其他</el-tag>
           </template>
         </el-table-column>

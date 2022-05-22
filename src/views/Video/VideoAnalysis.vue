@@ -74,8 +74,8 @@
             <template slot-scope="scope">
               <!--            <el-tag :type="scope.row.is_sport === 1 ? 'success' : 'danger'">测试</el-tag>-->
               <el-tag v-if="scope.row.is_sport === 1" type="success">体育运动</el-tag>
-              <el-tag v-if="scope.row.is_animal === 1">动物</el-tag>
-              <el-tag v-if="scope.row.is_transport === 1" type="warning">汽车</el-tag>
+              <el-tag v-if="scope.row.is_animal === 1">纪录片</el-tag>
+              <el-tag v-if="scope.row.is_transport === 1" type="warning">新闻</el-tag>
               <el-tag v-if="scope.row.is_sport === 0 && scope.row.is_animal === 0 && scope.row.is_transport === 0" type="info">其他</el-tag>
             </template>
           </el-table-column>
